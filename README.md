@@ -38,7 +38,7 @@ shiki:
 ```
 
 
-## 自定义主题
+## 使用自定义主题
 
 1. 将 Shiki 兼容的 JSON 主题文件放入指定目录，并配置 `customThemesPath` 后 会自动加载
 2. 在`_config.yml`配置文件中写入 
@@ -49,8 +49,8 @@ shiki:
 ```
 
 ## 截图
-[dark]()
-[]()
+![dark](./screenshot/dark.png)
+![light](./screenshot/light.png)
 
 ## 感谢
 - [Shiki](https://github.com/shikijs/shiki) 
