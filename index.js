@@ -36,9 +36,17 @@ shiki.createHighlighter({
   langs: shikiConfig?.supportedLangs ?? bundledLanguagesKeys
 }).then(async highlighter => {
 
-  hexo.extend.filter.register('before_post_render', function (post) {
-    if(post.title !== 'Shiki 代码高亮测试') return;
+  const lightTheme = highlighter.getTheme(light)
+  const darkTheme = highlighter.getTheme(dark)
 
+  hexo.extend.injector.register('head_end', () => {
+    return `<script>
+      document.documentElement.dataset.lightShiki = '${lightTheme.type}-shiki';
+      document.documentElement.dataset.darkShiki = '${darkTheme.type}-shiki';
+    </script>`;
+  });
+
+  hexo.extend.filter.register('before_post_render', function (post) {
     post.content = post.content.replace(codeMatch, (...argv) => {
       let { quote, ul, start, end, lang, figcation, code } = argv.pop();
 
@@ -52,14 +60,7 @@ shiki.createHighlighter({
           themes: { 
             light,
             dark,
-          },
-          transformers: [
-            {
-              pre(node) {
-                this.addClassToHast(node, 'language-js')
-              },
-            }
-          ]
+          }
         });
 
       } catch (error) {
@@ -72,15 +73,13 @@ shiki.createHighlighter({
 
       const classList = ['hexo-shiki-code'];
 
-      const styleList = []
-
-
       if(lang) classList.push('lang')
       if(shikiConfig.lineNumbers) classList.push('line-numbers')
+
       return `${quote + ul + start
         }<hexoPostRenderCodeBlock>
-              <figure class="${classList.join(' ')}" style="${styleList.join(';')}">
-                  <figcaption >
+              <figure class="${classList.join(' ')}" >
+                  <figcaption class="title-bar">
                     <span class="shiki-lang-label">${lang} ${figcation?.trim() ? ` · <i>${figcation}</i>` : ''}</span>
                     ${copyButton}
                   </figcaption>
@@ -116,17 +115,17 @@ hexo.extend.injector.register("head_end", () => {
   )
 })
 
-hexo.extend.injector.register("head_end", () => {
+hexo.extend.injector.register("body_end", () => {
   return js(
-    "js/shiki-copy.js"
+    "js/shiki-code.js"
   )
 })
 
-hexo.extend.generator.register('shiki-copy', function () {
+hexo.extend.generator.register('shiki-code', function () {
   return {
-    path: 'js/shiki-copy.js',
+    path: 'js/shiki-code.js',
     data: function () {
-      return fs.createReadStream(path.join(__dirname, 'shiki-copy.js'));
+      return fs.createReadStream(path.join(__dirname, 'shiki-code.js'));
     }
   };
 });

@@ -60,7 +60,7 @@ function showCopySuccess(button, buttonText) {
   setTimeout(() => {
     button.classList.remove('copied');
     buttonText.textContent = originalText;
-  }, 2000);
+  }, 1400);
 }
 
 // 显示复制错误状态
@@ -73,5 +73,30 @@ function showCopyError(button, buttonText) {
   setTimeout(() => {
     button.classList.remove('error');
     buttonText.textContent = originalText;
-  }, 2000);
+  }, 1400);
 }
+
+const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+const setCodeScheme = (isDark) => {
+  const documentElement = document.documentElement;
+  if(documentElement.dataset.lightShiki === documentElement.dataset.darkShiki) {
+    documentElement.classList.add(documentElement.dataset.darkShiki);
+    return;
+  }
+  if (isDark) {
+    documentElement.classList.add(documentElement.dataset.darkShiki);
+    documentElement.classList.remove(documentElement.dataset.lightShiki);
+  } else {
+    documentElement.classList.add(documentElement.dataset.lightShiki);
+    documentElement.classList.remove(documentElement.dataset.darkShiki);
+  }
+};
+
+// 页面加载时先执行一次，保证正确初始状态
+setCodeScheme(mediaQuery.matches);
+
+// 监听系统主题切换
+mediaQuery.addEventListener('change', e => {
+  setCodeScheme(e.matches);
+});
