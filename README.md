@@ -56,8 +56,3 @@ shiki:
 - [Shiki](https://github.com/shikijs/shiki) 
 - [Hexo](https://hexo.io/)
 
-
-## 许可证
-
-MIT License
-
