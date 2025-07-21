@@ -17,6 +17,7 @@ const dark = shikiConfig.dark ?? shikiConfig.theme;
 
 let themes = []
 
+console.log('mietl');
 if (shikiConfig?.customThemesPath) {
   const customThemes = helper.loadShikiThemes(shikiConfig.customThemesPath);
   for (const theme of customThemes) {
@@ -28,7 +29,7 @@ if (shikiConfig?.customThemesPath) {
 }else{
   themes = Array.from(new Set([light,dark]))
 }
-
+console.log('debug');
 
 
 shiki.createHighlighter({
