@@ -4,7 +4,13 @@ async function copyShikiCode(button) {
     return;
   }
   
-  const codeText = button.dataset.code;
+  const figure = button.closest('figure.hexo-shiki-code');
+
+  const codeElement = figure.querySelector('pre code');
+  
+  if (!codeElement) return;
+  
+  const codeText = codeElement.textContent || codeElement.innerText;
   const buttonText = button.querySelector('.button-text');
   
   try {
@@ -15,7 +21,7 @@ async function copyShikiCode(button) {
       fallbackCopyTextToClipboard(codeText, button, buttonText);
     }
   } catch (error) {
-    console.warn('Clipboard API 失败，尝试兼容方法:', error);
+    console.warn('Clipboard API 失败，尝试兼容方法：', error);
     fallbackCopyTextToClipboard(codeText, button, buttonText);
   }
 }
@@ -43,7 +49,7 @@ function fallbackCopyTextToClipboard(text, button, buttonText) {
       showCopyError(button, buttonText);
     }
   } catch (err) {
-    console.error('复制失败:', err);
+    console.error('复制失败：', err);
     showCopyError(button, buttonText);
   } finally {
     document.body.removeChild(textArea);
