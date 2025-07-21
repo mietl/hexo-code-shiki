@@ -67,7 +67,7 @@ shiki.createHighlighter({
         html = `<pre class="shiki-fallback"><code class="language-${lang}">${error.message}</code></pre>`
       }
 
-      const copyButton = shikiConfig.copyButton ? `<button class="shiki-copy-button" data-code="${code}" onclick="copyShikiCode(this)">
+      const copyButton = shikiConfig.copyButton ? `<button class="shiki-copy-button" onclick="copyShikiCode(this)">
                       <span class="button-text">复制</span>
                     </button>` : ''
 
@@ -92,7 +92,7 @@ shiki.createHighlighter({
   });
 
 }).catch(error => {
-  console.error('Shiki 初始化失败:', error);
+  console.error('Shiki 初始化失败：', error);
 });
 
 
